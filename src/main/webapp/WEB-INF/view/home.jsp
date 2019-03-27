@@ -11,9 +11,13 @@
 <p>Role: <security:authentication property="principal.authorities"/></p>
 
 <hr>
+<security:authorize access="hasRole('MANAGER')" >
+    <p><a href="${pageContext.request.contextPath}/leaders" >LeaderShip Meeting</a>(only for manager)</p>
+</security:authorize>
+<security:authorize access="hasRole('ADMIN')">
+    <p><a href="${pageContext.request.contextPath}/systems" >IT System Meeting</a>(only for admin)</p>
+</security:authorize>
 
-<p><a href="${pageContext.request.contextPath}/leaders" >LeaderShip Meeting</a>(only for manager)</p>
-<p><a href="${pageContext.request.contextPath}/systems" >IT System Meeting</a>(only for admin)</p>
 
 <hr>
 <form:form action="${pageContext.request.contextPath}/logout" method="post">
