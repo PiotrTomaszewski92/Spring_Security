@@ -18,14 +18,17 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter {
 
         auth.inMemoryAuthentication()
                 .withUser(user.username("john").password("test123").roles("EMPLOYEE"))
-                .withUser(user.username("mary").password("test123").roles("MANAGER"))
-                .withUser(user.username("peter").password("test123").roles("ADMIN"));
+                .withUser(user.username("mary").password("test123").roles("EMPLOYEE","MANAGER"))
+                .withUser(user.username("peter").password("test123").roles("EMPLOYEE","ADMIN"));
     }
 
     @Override //Configure security of web paths in application, login, logout,...
     protected void configure(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.authorizeRequests()
-                .anyRequest().authenticated()
+//              .anyRequest().authenticated() - chcemy konkretnie ograniczyc
+                .antMatchers("/").hasRole("EMPLOYEE")
+                .antMatchers("/leaders/**").hasRole("MANAGER")
+                .antMatchers("/systems/**").hasRole("ADMIN")
                 .and()
                 .formLogin()
                 .loginPage("/showMyLoginPage")
